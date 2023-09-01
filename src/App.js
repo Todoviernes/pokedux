@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import { Col } from 'antd'
 import './App.css';
+import Searcher from './components/Searcher';
+import PokemonList from './components/PokemonList';
+import logo from './statics/logo.svg';
+import { useEffect, useState } from 'react';
+import { getPockemon } from './api';
 
 function App() {
+  const [pokemons, setPokemons] = useState([]);
+  useEffect(() => {
+    const fetchPokemons = async() => {
+      const pokemonsResponse = await getPockemon();
+      setPokemons(pokemonsResponse)
+    };
+
+    fetchPokemons();
+  }, [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Col span={8} offset={8} style={{textAlign: 'center'}}>
+        <img src={logo} className="logo" alt="logo" />
+      </Col>
+      <Col span={8} offset={8} style={{textAlign: 'center'}}>
+       <Searcher/>
+      </Col>
+      <PokemonList pokemons={pokemons}/>
     </div>
   );
 }
